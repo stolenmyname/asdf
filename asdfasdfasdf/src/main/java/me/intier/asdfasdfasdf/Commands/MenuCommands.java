@@ -4,16 +4,13 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -90,7 +87,7 @@ public class MenuCommands implements TabExecutor, Listener {
         warpMenuOverworldMeta.displayName(Component.text()
                 .append(Component.text("Warp Overworld")
                                 .color(NamedTextColor.GREEN)
-                                .decoration(TextDecoration.ITALIC, true)
+                                .decoration(TextDecoration.ITALIC, false)
                                 .decoration(TextDecoration.BOLD, false)
                                 .decoration(TextDecoration.STRIKETHROUGH, false)
                                 .decoration(TextDecoration.UNDERLINED, false)
@@ -100,7 +97,7 @@ public class MenuCommands implements TabExecutor, Listener {
         warpMenu.setItem(9+6,warpMenuOverworld);
     }
 
-    private static Inventory menu = Bukkit.createInventory(null, 9*6, "Menu");
+    private static Inventory menu = Bukkit.createInventory(null, 9*6, "§e§l?RPG? Menu");
 
     static {
         ItemStack warpMenu = new ItemStack(Material.END_PORTAL_FRAME);
@@ -134,74 +131,42 @@ public class MenuCommands implements TabExecutor, Listener {
         menu.setItem(9 + 9 + 9 + 4, statsMenu);
     }
 
-    Player p;
-
     @EventHandler
     public void OnInventoryClick(InventoryClickEvent event) {
+        Player p = (Player) event.getWhoClicked();
+        String title = p.getOpenInventory().getTitle();
 
         //WarpMenu
-        if (event.getWhoClicked().getOpenInventory().getTitle().equals("Menu")) {
+        if (title.equals("Menu")) {
             event.setCancelled(true);
-            if (event.getSlot() == 9+9+4) event.getWhoClicked().openInventory(warpMenu);
+            if (event.getSlot() == 9+9+4) p.openInventory(warpMenu);
+            else if (event.getSlot() == 9+9+9+4) p.openInventory(statsMenu);
         }
-        else if (event.getWhoClicked().getOpenInventory().getTitle().equals("Warp Menu")) {
+        else if (title.equals("Warp Menu")) {
             event.setCancelled(true);
             if (event.getSlot() == 9 + 2) warpEnd(p);
+            else if (event.getSlot() == 9 + 4) warpNether(p);
+            else if (event.getSlot() == 9 + 6) warpOverworld(p);
         }
-
-        else if (event.getWhoClicked().getOpenInventory().getTitle().equals("Warp Menu")) {
-            event.setCancelled(true);
-            if (event.getSlot() == 9 + 4) warpNether(p);
-        }
-
-        else if (event.getWhoClicked().getOpenInventory().getTitle().equals("Warp Menu")) {
-            event.setCancelled(true);
-            if (event.getSlot() == 9 + 6) warpOverworld(p);
-        }
-
-        //StatsMenu
-        else if (event.getWhoClicked().getOpenInventory().getTitle().equals("Menu")) {
-            event.setCancelled(true);
-            if (event.getSlot() == 9+9+9+4) event.getWhoClicked().openInventory(statsMenu);
-        }
-
-        else if (event.getWhoClicked().getOpenInventory().getTitle().equals("Stats Menu")) {
+        else if (title.equals("Stats Menu")) {
             event.setCancelled(true);
             if (event.getSlot() == 9+9+9+9+7) suicide(p);
         }
     }
 
-    String helpMessage = "§cWrong Command! /menu [warp/stats]";
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equals("menu")) {
-            if (args.length != 1) {
-                if (command instanceof Player p) {
-                    p.sendMessage(helpMessage);
-                    return true;
-                }
-                switch (args[0].toLowerCase()) {
-                    case "warp" -> p.openInventory(warpMenu);
-                    case "stats" -> p.openInventory(statsMenu);
-                }
+            if (sender instanceof Player p) {
+                p.openInventory(menu);
+                return true;
             }
-            return true;
         }
         return false;
     }
-
-
-
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (command.getName().equals("menu")) {
-            List<String> list = new ArrayList<>();
-            list.add("warp");
-            list.add("stats");
-            return list;
-        }
-        else {
-            return new ArrayList<>();
-        }
+        return new ArrayList<>();
     }
 }
+

@@ -19,7 +19,6 @@ public class SuicideCommands implements TabExecutor {
                 suicide(p);
                 return true;
             }
-            return true;
         }
         return false;
     }

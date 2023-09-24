@@ -49,7 +49,7 @@ public final class Asdfasdfasdf extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
 
-        event.setQuitMessage(event.getPlayer().getName() + " §bQuit.");
+        event.setQuitMessage(event.getPlayer().getName() + " §bLeft.");
     }
 
 

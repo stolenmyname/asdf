@@ -18,7 +18,7 @@ public class WarpCommands implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equals("warp")) {
-            if (command instanceof Player p) {
+            if (sender instanceof Player p) {
                 if (args.length != 1)  {
                     p.sendMessage(helpMessage);
                     return true;
@@ -33,20 +33,6 @@ public class WarpCommands implements TabExecutor {
         }
         return false;
     }
-
-    String helpMessage = "§cWrong Commands! /warp [end/nether/overwold]";
-
-    public static void warpEnd(Player p) {
-        p.teleport(new Location(Bukkit.getWorlds().get(2), 0, Bukkit.getWorlds().get(2).getHighestBlockYAt(0, 0), 0));
-    }
-
-    public static void warpNether(Player p) {
-        p.teleport(new Location(Bukkit.getWorlds().get(1), 0, Bukkit.getWorlds().get(1).getHighestBlockYAt(0, 0), 0));
-    }
-
-    public static void warpOverworld(Player p) {
-        p.teleport(new Location(Bukkit.getWorlds().get(0), 0, Bukkit.getWorlds().get(2).getHighestBlockYAt(0, 0), 0));
-    }
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equals("warp")) {
@@ -60,5 +46,17 @@ public class WarpCommands implements TabExecutor {
             return new ArrayList<>();
         }
     }
+    String helpMessage = "§cWrong Commands! /warp [end/nether/overwold]";
 
+    public static void warpEnd(Player p) {
+        p.teleport(new Location(Bukkit.getWorlds().get(2), 0, Bukkit.getWorlds().get(2).getHighestBlockYAt(0, 0), 0));
+    }
+
+    public static void warpNether(Player p) {
+        p.teleport(new Location(Bukkit.getWorlds().get(1), 0, Bukkit.getWorlds().get(1).getHighestBlockYAt(0, 0), 0));
+    }
+
+    public static void warpOverworld(Player p) {
+        p.teleport(new Location(Bukkit.getWorlds().get(0), 0, Bukkit.getWorlds().get(0).getHighestBlockYAt(0, 0), 0));
+    }
 }

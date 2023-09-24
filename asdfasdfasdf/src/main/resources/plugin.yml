@@ -8,4 +8,4 @@ commands:
   warp:
     usage: /warp <end, nether, overworld>
   menu:
-    usage: /menu <warp, stats>
+    usage: /menu
