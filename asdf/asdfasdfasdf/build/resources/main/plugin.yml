@@ -1,0 +1,13 @@
+name: asdfasdfasdf
+version: '0.0-Alfa'
+main: me.intier.asdfasdfasdf.Asdfasdfasdf
+api-version: '1.20'
+commands:
+  suicide:
+    usage: /suicide
+  warp:
+    usage: /warp <end, nether, overworld>
+  menu:
+    usage: /menu
+  backpack:
+    usage: /backpack
